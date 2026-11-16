@@ -1,0 +1,98 @@
+name: Dictate
+
+options:
+  bundleIdPrefix: app.dictate
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1"
+    CURRENT_PROJECT_VERSION: "1"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGNING_ALLOWED: "NO"
+    # Overridden by CI: the signing profile decides the real ones.
+    DICTATE_BUNDLE_ID: app.dictate.ios
+    DICTATE_APP_GROUP: group.app.dictate.ios
+
+targets:
+  Dictate:
+    type: application
+    platform: iOS
+    scheme: {}
+    sources:
+      - App
+      - Shared
+      - Intents
+      # Logic shared with the macOS client.
+      - path: ../mac/Sources/DictateCore/Audio.swift
+      - path: ../mac/Sources/DictateCore/Chunks.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(DICTATE_BUNDLE_ID)
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Intents/ is shared with the widgets; only here does it reach the app's code.
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) MAIN_APP
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Dictate
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, ru]
+        DictateAppGroup: $(DICTATE_APP_GROUP)
+        NSMicrophoneUsageDescription: Dictate records your voice while you dictate.
+        NSSupportsLiveActivities: true
+        UIBackgroundModes: [audio]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleURLTypes:
+          - CFBundleURLName: dictate
+            CFBundleURLSchemes: [dictate]
+    dependencies:
+      - target: Keyboard
+      - target: Widgets
+
+  Keyboard:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Keyboard
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(DICTATE_BUNDLE_ID).keyboard
+    info:
+      path: Keyboard/Info.plist
+      properties:
+        CFBundleDisplayName: Dictate
+        CFBundleDevelopmentRegion: en
+        DictateAppGroup: $(DICTATE_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            RequestsOpenAccess: true
+            IsASCIICapable: false
+            PrefersRightToLeft: false
+            PrimaryLanguage: mul
+
+  Widgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widgets
+      - Shared
+      - Intents
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(DICTATE_BUNDLE_ID).widgets
+    info:
+      path: Widgets/Info.plist
+      properties:
+        CFBundleDisplayName: Dictate
+        CFBundleDevelopmentRegion: en
+        DictateAppGroup: $(DICTATE_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension

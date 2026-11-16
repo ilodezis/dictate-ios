@@ -1,0 +1,95 @@
+/* App name */
+"AppName" = "Dictate";
+
+/* Microphone state: main screen, keyboard-return screen */
+"StatusOff" = "Microphone off";
+"StatusReady" = "Keyboard ready";
+"StatusRecording" = "Recording";
+"StatusSending" = "Sending…";
+"StatusOffAfter" = "Turns off after %ld min idle";
+"TurnOn" = "Turn on";
+"TurnOff" = "Turn off";
+
+/* Main screen */
+"RetryFailed" = "Send again (%ld)";
+"History" = "History";
+"HistoryEmpty" = "Nothing dictated yet";
+"Copied" = "Copied";
+
+/* Opened from the keyboard */
+"BackTitle" = "Go back";
+"BackHow" = "Tap ◀ in the top-left corner or swipe the bottom bar to the right.";
+"BackStay" = "Stay here";
+
+/* Setup and settings */
+"Server" = "Server";
+"ServerPlaceholder" = "https://…";
+"TokenPlaceholder" = "Token";
+"TokenSaved" = "Token saved";
+"TokenSave" = "Save";
+"Microphone" = "Microphone";
+"MicrophoneAllow" = "Allow microphone";
+"MicrophoneAllowed" = "Allowed";
+"Keyboard" = "Keyboard";
+"KeyboardSetup" = "Settings → Apps → Dictate → Keyboards: turn on Dictate and Allow Full Access.";
+"OpenSettings" = "Open Settings";
+"KeyboardTryHere" = "Try it here";
+"KeyboardTryHint" = "Switch to Dictate with 🌐 in this field to check it.";
+"OnboardingDone" = "Done";
+"TurnOffAfter" = "Turn off";
+"Never" = "Never";
+"Minutes" = "After %ld min idle";
+"WithoutApp" = "Without opening the app";
+"ControlCenterSetup" = "Control Center: hold an empty spot → Add a Control → Dictate. Turns the microphone on and off.";
+"ActionButtonSetup" = "Action Button: Settings → Action Button → Shortcut → Dictate. First press records, second copies the text.";
+
+/* Dictionary */
+"Dictionary" = "Dictionary";
+"TermPlaceholder" = "Word or phrase";
+"TermAdd" = "Add";
+"TermHint" = "Separate with commas. The speech model gets these as spelling hints.";
+"TermsCount" = "Terms (%ld)";
+
+/* Notices (%@ is the error text) */
+"NoticeNoMicrophone" = "No microphone access. Allow it in Settings.";
+"NoticeMicrophoneFailed" = "Microphone did not start: %@";
+"NoticeInterrupted" = "A call took the microphone. Turn it on again.";
+"NoticeEncodeFailed" = "Could not encode the recording.";
+"NoticeSaved" = "Not sent, audio kept: %@";
+"NoticeLost" = "Not sent and not saved: %@";
+"NoticeRetryFailed" = "Still failing: %@";
+"NoticeRetriedNoText" = "Sent. No speech found.";
+"NoticeRetriedCopied" = "Sent. Last text copied.";
+"NoticeTermAdded" = "Added: %@";
+"NoticeTermRemoved" = "Removed: %@";
+"NoticeTermFailed" = "Dictionary not saved: %@";
+"NoticeNoServer" = "Set the server address in Settings (https only).";
+"NoticeNoToken" = "Save the token in Settings.";
+
+/* Keyboard */
+"KeyboardNeedsFullAccess" = "Turn on Allow Full Access";
+"KeyboardOpenAppManually" = "Open Dictate to turn the microphone on";
+"KeyboardMicOff" = "Turn on the microphone";
+"KeyboardDictate" = "Dictate";
+"KeyboardStop" = "Stop";
+"KeyboardCancel" = "Cancel";
+"KeySpace" = "Space";
+"KeyDelete" = "Delete";
+
+/* Live Activity and Control Center */
+"ActivityReady" = "Microphone on";
+"ActivityTyped" = "Typed";
+"ActivityCopied" = "Copied";
+"ActivityFailed" = "Not sent";
+"ControlName" = "Dictate microphone";
+"ControlDescription" = "Turns the microphone on for the Dictate keyboard.";
+"ControlOn" = "Microphone on";
+"ControlOff" = "Microphone off";
+
+/* Intents */
+"IntentTitle" = "Dictate";
+"IntentShortTitle" = "Dictate";
+"IntentDescription" = "Press to dictate. Press again to stop and copy the text.";
+"MicrophoneIntentTitle" = "Dictate microphone";
+"MicrophoneIntentDescription" = "Turns the microphone for the keyboard on or off.";
+"TurnOffIntentTitle" = "Turn off the microphone";

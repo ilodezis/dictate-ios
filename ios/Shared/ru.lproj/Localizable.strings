@@ -1,0 +1,95 @@
+/* App name */
+"AppName" = "Dictate";
+
+/* Microphone state: main screen, keyboard-return screen */
+"StatusOff" = "Микрофон выключен";
+"StatusReady" = "Клавиатура готова";
+"StatusRecording" = "Запись";
+"StatusSending" = "Отправка…";
+"StatusOffAfter" = "Выключится через %ld мин без диктовки";
+"TurnOn" = "Включить";
+"TurnOff" = "Выключить";
+
+/* Main screen */
+"RetryFailed" = "Отправить ещё раз (%ld)";
+"History" = "История";
+"HistoryEmpty" = "Пока ничего не надиктовано";
+"Copied" = "Скопировано";
+
+/* Opened from the keyboard */
+"BackTitle" = "Вернись назад";
+"BackHow" = "Нажми ◀ в левом верхнем углу или смахни нижнюю полоску вправо.";
+"BackStay" = "Остаться";
+
+/* Setup and settings */
+"Server" = "Сервер";
+"ServerPlaceholder" = "https://…";
+"TokenPlaceholder" = "Токен";
+"TokenSaved" = "Токен сохранён";
+"TokenSave" = "Сохранить";
+"Microphone" = "Микрофон";
+"MicrophoneAllow" = "Разрешить микрофон";
+"MicrophoneAllowed" = "Разрешён";
+"Keyboard" = "Клавиатура";
+"KeyboardSetup" = "Настройки → Приложения → Dictate → Клавиатуры: включи Dictate и «Полный доступ».";
+"OpenSettings" = "Открыть Настройки";
+"KeyboardTryHere" = "Проверь здесь";
+"KeyboardTryHint" = "Переключись на Dictate кнопкой 🌐 в этом поле.";
+"OnboardingDone" = "Готово";
+"TurnOffAfter" = "Выключать";
+"Never" = "Никогда";
+"Minutes" = "Через %ld мин без диктовки";
+"WithoutApp" = "Без открытия приложения";
+"ControlCenterSetup" = "Пункт управления: зажми пустое место → Добавить элемент → Dictate. Включает и выключает микрофон.";
+"ActionButtonSetup" = "Кнопка действия: Настройки → Кнопка действия → Быстрая команда → Dictate. Первое нажатие пишет, второе копирует текст.";
+
+/* Dictionary */
+"Dictionary" = "Словарь";
+"TermPlaceholder" = "Слово или фраза";
+"TermAdd" = "Добавить";
+"TermHint" = "Несколько — через запятую. Модель получает их как подсказку, как писать.";
+"TermsCount" = "Термины (%ld)";
+
+/* Notices (%@ is the error text) */
+"NoticeNoMicrophone" = "Нет доступа к микрофону. Разреши в Настройках.";
+"NoticeMicrophoneFailed" = "Микрофон не включился: %@";
+"NoticeInterrupted" = "Звонок забрал микрофон. Включи его снова.";
+"NoticeEncodeFailed" = "Не удалось сжать запись.";
+"NoticeSaved" = "Не отправлено, аудио сохранено: %@";
+"NoticeLost" = "Не отправлено и не сохранено: %@";
+"NoticeRetryFailed" = "Опять не ушло: %@";
+"NoticeRetriedNoText" = "Отправлено. Речи не нашлось.";
+"NoticeRetriedCopied" = "Отправлено. Последний текст скопирован.";
+"NoticeTermAdded" = "Добавлено: %@";
+"NoticeTermRemoved" = "Удалено: %@";
+"NoticeTermFailed" = "Словарь не сохранился: %@";
+"NoticeNoServer" = "Укажи адрес сервера в Настройках (только https).";
+"NoticeNoToken" = "Сохрани токен в Настройках.";
+
+/* Keyboard */
+"KeyboardNeedsFullAccess" = "Включи «Полный доступ»";
+"KeyboardOpenAppManually" = "Открой Dictate, чтобы включить микрофон";
+"KeyboardMicOff" = "Включить микрофон";
+"KeyboardDictate" = "Диктовать";
+"KeyboardStop" = "Стоп";
+"KeyboardCancel" = "Отменить";
+"KeySpace" = "Пробел";
+"KeyDelete" = "Удалить";
+
+/* Live Activity and Control Center */
+"ActivityReady" = "Микрофон включён";
+"ActivityTyped" = "Вставлено";
+"ActivityCopied" = "Скопировано";
+"ActivityFailed" = "Не отправлено";
+"ControlName" = "Микрофон Dictate";
+"ControlDescription" = "Включает микрофон для клавиатуры Dictate.";
+"ControlOn" = "Микрофон включён";
+"ControlOff" = "Микрофон выключен";
+
+/* Intents */
+"IntentTitle" = "Диктовать";
+"IntentShortTitle" = "Диктовать";
+"IntentDescription" = "Нажми, чтобы диктовать. Ещё раз — стоп, текст в буфере.";
+"MicrophoneIntentTitle" = "Микрофон Dictate";
+"MicrophoneIntentDescription" = "Включает или выключает микрофон для клавиатуры.";
+"TurnOffIntentTitle" = "Выключить микрофон";
