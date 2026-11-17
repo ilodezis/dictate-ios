@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import os
 import Security
 
 struct DictateError: LocalizedError {
@@ -8,53 +9,89 @@ struct DictateError: LocalizedError {
     var errorDescription: String? { message }
 }
 
-/// The microphone, kept running for the whole session: iOS lets a backgrounded app go on recording,
-/// never start. Samples are kept only between `begin` and `end`.
+/// The audio session is kept alive in the background by a silent output; the microphone input is only switched on
+/// between `begin` and `end`, so the recording indicator shows while someone is actually dictating.
+/// Samples are kept only between `begin` and `end`.
 final class Recorder {
-    private let engine = AVAudioEngine()
+    private let keepalive = AVAudioEngine()
+    private let silence = AVAudioPlayerNode()
+    private let input = AVAudioEngine()
     private let lock = NSLock()
     private var samples: [Float] = []
     private var capturing = false
+    private var keepaliveReady = false
+    private let log = Logger(subsystem: "app.dictate", category: "mic")
     private(set) var sampleRate: Double = 48_000
     /// Called on the main thread with each buffer's level while capturing.
     var onLevel: ((Float) -> Void)?
 
+    /// Activates the session and starts the silent output that keeps the app running in the background.
     func start() throws {
         let session = AVAudioSession.sharedInstance()
         // mixWithOthers: music and podcasts keep playing while the session waits.
         try session.setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .defaultToSpeaker])
         try session.setActive(true)
-        let input = engine.inputNode
-        let format = input.outputFormat(forBus: 0)
-        guard format.sampleRate > 0 else { throw DictateError(L("NoticeNoMicrophone")) }
-        sampleRate = format.sampleRate
-        input.removeTap(onBus: 0)
-        input.installTap(onBus: 0, bufferSize: 2048, format: format) { [weak self] buffer, _ in
-            self?.consume(buffer)
+        guard session.isInputAvailable else { throw DictateError(L("NoticeNoMicrophone")) }
+        if !keepaliveReady {
+            let format = AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 1)!
+            keepalive.attach(silence)
+            keepalive.connect(silence, to: keepalive.mainMixerNode, format: format)
+            keepaliveReady = true
         }
-        engine.prepare()
-        try engine.start()
+        let buffer = AVAudioPCMBuffer(pcmFormat: AVAudioFormat(standardFormatWithSampleRate: 44_100, channels: 1)!, frameCapacity: 44_100)!
+        buffer.frameLength = 44_100
+        try keepalive.start()
+        silence.scheduleBuffer(buffer, at: nil, options: .loops)
+        silence.play()
+        log.notice("armed: session active, silent output running")
     }
 
     func stop() {
-        engine.inputNode.removeTap(onBus: 0)
-        engine.stop()
+        stopInput()
+        silence.stop()
+        keepalive.stop()
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    func begin() {
+    /// Switches the microphone input on and starts keeping samples. Throws when iOS refuses to start recording.
+    func begin() throws {
+        let node = input.inputNode
+        let format = node.outputFormat(forBus: 0)
+        guard format.sampleRate > 0 else { throw DictateError(L("NoticeNoMicrophone")) }
+        sampleRate = format.sampleRate
         lock.withLock {
             samples.removeAll(keepingCapacity: true)
             capturing = true
         }
+        node.removeTap(onBus: 0)
+        node.installTap(onBus: 0, bufferSize: 2048, format: format) { [weak self] buffer, _ in
+            self?.consume(buffer)
+        }
+        input.prepare()
+        do {
+            try input.start()
+            log.notice("input started")
+        } catch {
+            let code = (error as NSError).code
+            log.error("input start failed: \(code, privacy: .public) \(error.localizedDescription, privacy: .public)")
+            lock.withLock { capturing = false }
+            node.removeTap(onBus: 0)
+            throw error
+        }
     }
 
     func end() -> [Float] {
-        lock.withLock {
+        stopInput()
+        return lock.withLock {
             capturing = false
             defer { samples = [] }
             return samples
         }
+    }
+
+    private func stopInput() {
+        input.inputNode.removeTap(onBus: 0)
+        input.stop()
     }
 
     private func consume(_ buffer: AVAudioPCMBuffer) {

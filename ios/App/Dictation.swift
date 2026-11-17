@@ -220,7 +220,12 @@ final class Dictation {
         lastUse = Date()
         recordingStarted = Date()
         level = 0
-        recorder.begin()
+        do {
+            try recorder.begin()
+        } catch {
+            notice = L("NoticeMicrophoneFailed", error.localizedDescription)
+            return
+        }
         set(.recording)
     }
 
