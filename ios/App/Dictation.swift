@@ -10,6 +10,7 @@ import WidgetKit
 @MainActor
 final class Dictation {
     static let shared = Dictation()
+    private let log = Logger(subsystem: "app.dictate", category: "session")
     static let historySize = 50
     /// Minutes without a dictation before the microphone is let go; 0 keeps it until turned off.
     static let holdChoices = [0, 5, 10, 30, 60]
@@ -70,6 +71,8 @@ final class Dictation {
             let type = (note.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt)
                 .flatMap(AVAudioSession.InterruptionType.init(rawValue:))
             MainActor.assumeIsolated {
+                let reason = note.userInfo?[AVAudioSessionInterruptionReasonKey] as? UInt ?? 99
+                Dictation.shared.log.notice("interruption type=\(type?.rawValue ?? 99, privacy: .public) reason=\(reason, privacy: .public)")
                 if type == .began { Dictation.shared.interruptionBegan() } else { Dictation.shared.interruptionEnded() }
             }
         }
@@ -141,10 +144,11 @@ final class Dictation {
     func turnOff() {
         heldOff = true
         resumeAfterInterruption = false
-        release()
+        release("turnOff")
     }
 
-    private func release() {
+    private func release(_ reason: String) {
+        log.notice("release: \(reason, privacy: .public) phase=\(self.phase.rawValue, privacy: .public)")
         if phase == .recording { stopRecording(to: .clipboard) }
         heartbeat?.invalidate()
         heartbeat = nil
@@ -155,7 +159,7 @@ final class Dictation {
 
     private func beat() {
         if phase == .ready, holdMinutes > 0, Date().timeIntervalSince(lastUse) > Double(holdMinutes * 60) {
-            return release()
+            return release("idle")
         }
         Bridge.aliveUntil = Date().addingTimeInterval(6)
     }
@@ -164,7 +168,7 @@ final class Dictation {
     private func interruptionBegan() {
         guard phase != .off else { return }
         resumeAfterInterruption = true
-        release()
+        release("interruption")
     }
 
     private func interruptionEnded() {
