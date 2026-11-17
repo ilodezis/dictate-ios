@@ -376,7 +376,6 @@ struct SettingsView: View {
 
             Section {
                 Text(L("ControlCenterSetup"))
-                Text(L("ActionButtonSetup"))
             } header: {
                 Text(L("WithoutApp"))
             }

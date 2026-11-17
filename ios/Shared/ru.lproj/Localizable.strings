@@ -41,7 +41,6 @@
 "Minutes" = "Через %ld мин без диктовки";
 "WithoutApp" = "Без открытия приложения";
 "ControlCenterSetup" = "Пункт управления: зажми пустое место → Добавить элемент → Dictate. Включает и выключает микрофон.";
-"ActionButtonSetup" = "Кнопка действия: Настройки → Кнопка действия → Быстрая команда → Dictate. Первое нажатие пишет, второе копирует текст.";
 
 /* Dictionary */
 "Dictionary" = "Словарь";
@@ -87,9 +86,6 @@
 "ControlOff" = "Микрофон выключен";
 
 /* Intents */
-"IntentTitle" = "Диктовать";
-"IntentShortTitle" = "Диктовать";
-"IntentDescription" = "Нажми, чтобы диктовать. Ещё раз — стоп, текст в буфере.";
 "MicrophoneIntentTitle" = "Микрофон Dictate";
 "MicrophoneIntentDescription" = "Включает или выключает микрофон для клавиатуры.";
 "TurnOffIntentTitle" = "Выключить микрофон";

@@ -20,11 +20,3 @@ struct DictateApp: App {
         }
     }
 }
-
-struct DictateShortcuts: AppShortcutsProvider {
-    static var appShortcuts: [AppShortcut] {
-        AppShortcut(
-            intent: DictateIntent(), phrases: ["\(.applicationName)"], shortTitle: "IntentShortTitle",
-            systemImageName: "mic")
-    }
-}

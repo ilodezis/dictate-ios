@@ -41,7 +41,6 @@
 "Minutes" = "After %ld min idle";
 "WithoutApp" = "Without opening the app";
 "ControlCenterSetup" = "Control Center: hold an empty spot → Add a Control → Dictate. Turns the microphone on and off.";
-"ActionButtonSetup" = "Action Button: Settings → Action Button → Shortcut → Dictate. First press records, second copies the text.";
 
 /* Dictionary */
 "Dictionary" = "Dictionary";
@@ -87,9 +86,6 @@
 "ControlOff" = "Microphone off";
 
 /* Intents */
-"IntentTitle" = "Dictate";
-"IntentShortTitle" = "Dictate";
-"IntentDescription" = "Press to dictate. Press again to stop and copy the text.";
 "MicrophoneIntentTitle" = "Dictate microphone";
 "MicrophoneIntentDescription" = "Turns the microphone for the keyboard on or off.";
 "TurnOffIntentTitle" = "Turn off the microphone";

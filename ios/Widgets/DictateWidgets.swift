@@ -11,7 +11,7 @@ struct DictateWidgets: WidgetBundle {
     }
 }
 
-/// Control Center, the Lock Screen and the Action Button: the microphone on or off without opening the app.
+/// Control Center and the Lock Screen: the microphone on or off without opening the app.
 struct MicrophoneControl: ControlWidget {
     var body: some ControlWidgetConfiguration {
         StaticControlConfiguration(kind: Bridge.controlKind, provider: Provider()) { isOn in

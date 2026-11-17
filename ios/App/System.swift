@@ -181,7 +181,7 @@ enum Keychain {
         guard !token.isEmpty else { return }
         var item = query
         item[kSecValueData as String] = Data(token.utf8)
-        // The Action Button works on a locked phone after the first unlock.
+        // Readable on a locked phone after the first unlock.
         item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
         SecItemAdd(item as CFDictionary, nil)
     }

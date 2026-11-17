@@ -97,7 +97,7 @@ final class Dictation {
     }
 
     /// Turns the microphone on and keeps it, so the keyboard can dictate. Only works with the app on screen,
-    /// or from an audio recording intent (Control Center, Action Button).
+    /// or from an audio recording intent (Control Center).
     @discardableResult
     func hold() async -> Bool {
         // Opening from the keyboard asks twice at once: the link and the app coming to the screen.
@@ -184,16 +184,6 @@ final class Dictation {
     }
 
     // MARK: - Dictation
-
-    /// The Action Button: start, or stop and copy.
-    func toggle() async {
-        switch phase {
-        case .off: if await hold() { startRecording() }
-        case .ready: startRecording()
-        case .recording: stopRecording(to: .clipboard)
-        case .sending: break
-        }
-    }
 
     /// Control Center: microphone on, or off.
     func toggleMicrophone() async {

@@ -4,24 +4,11 @@ import AppIntents
 // and the system runs audio-recording and Live Activity intents in the app's process. Only the app
 // target defines MAIN_APP, so the extension carries the declarations without the app's code.
 
-/// The Action Button: first press records, the next one stops and puts the text on the clipboard.
-/// An audio recording intent may start the microphone from the background, as long as a Live Activity shows it.
-struct DictateIntent: AudioRecordingIntent {
-    static let title: LocalizedStringResource = "IntentTitle"
-    static let description = IntentDescription("IntentDescription")
-
-    @MainActor
-    func perform() async throws -> some IntentResult {
-        #if MAIN_APP
-        await Dictation.shared.toggle()
-        #endif
-        return .result()
-    }
-}
-
 /// Control Center: turns the microphone on for the keyboard without opening the app, or off.
 struct MicrophoneIntent: AudioRecordingIntent {
     static let title: LocalizedStringResource = "MicrophoneIntentTitle"
+    // Only the Control Center button runs it; run from Shortcuts, iOS refuses it the Live Activity it requires.
+    static let isDiscoverable = false
     static let description = IntentDescription("MicrophoneIntentDescription")
 
     @MainActor
