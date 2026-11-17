@@ -1,6 +1,7 @@
 import ActivityKit
 import AVFoundation
 import Observation
+import os
 import UIKit
 import WidgetKit
 
@@ -196,7 +197,14 @@ final class Dictation {
 
     /// Control Center: microphone on, or off.
     func toggleMicrophone() async {
-        if phase == .off { await hold() } else { turnOff() }
+        guard phase == .off else { return turnOff() }
+        guard await hold() else { return }
+        // iOS kills an audio recording intent that leaves the microphone on without a Live Activity.
+        if activity == nil {
+            let reason = activityFailure ?? "unknown"
+            turnOff()
+            notice = L("NoticeMicrophoneFailed", reason)
+        }
     }
 
     /// Each buffer's level while recording; the keyboard animates with it, a few times a second is enough.
@@ -333,6 +341,9 @@ final class Dictation {
         if switched { ControlCenter.shared.reloadControls(ofKind: Bridge.controlKind) }
     }
 
+    /// Why the Live Activity did not start; nil while it runs.
+    private var activityFailure: String?
+
     private func showActivity(_ shown: String) {
         let state = DictateAttributes.ContentState(phase: shown, since: phase == .recording ? recordingStarted : Date())
         let content = ActivityContent(state: state, staleDate: nil)
@@ -340,8 +351,17 @@ final class Dictation {
             Task { await activity.update(content) }
             return
         }
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        activity = try? Activity.request(attributes: DictateAttributes(), content: content)
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            activityFailure = "Live Activities are disabled"
+            return
+        }
+        do {
+            activity = try Activity.request(attributes: DictateAttributes(), content: content)
+            activityFailure = nil
+        } catch {
+            activityFailure = String(describing: error)
+            Logger(subsystem: "app.dictate", category: "activity").error("Activity.request failed: \(error)")
+        }
     }
 
     private func endActivity() {
